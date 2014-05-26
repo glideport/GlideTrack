@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<!-- TBD: <HTML lang='en' manifest="manifest.mf"> -->
+<HTML>
+<HEAD>
+  <TITLE>GT - Reference Implementation</TITLE>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+
+<LINK href="gt.css" rel="stylesheet" type="text/css" />
+
+<script type="text/javascript" src="cordova.js"></script>
+<script type="text/javascript" src="gt.js"></script>
+<script type="text/javascript" src="App.js"></script>
+<script type="text/javascript" src="Settings.js"></script>
+<script type="text/javascript" src="Manager.js"></script>
+<script type="text/javascript" src="Sim.js"></script>
+<script type="text/javascript" src="Track.js"></script>
+<script type="text/javascript" src="Dash.js"></script>
+<script>
+function ONLOAD() {
+  if(!window.cordova) gt.App.RUN();
+  else document.addEventListener('deviceready',function() { gt.App.RUN(); });
+}
+</script>
+</HEAD>
+
+<BODY onload='ONLOAD()'></BODY>
+</HTML>
+<!-- EOF -->

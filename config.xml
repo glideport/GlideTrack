@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="aero.glideport.gt" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>GlideTrack</name>
+    <description>
+        Mobile device tracker for gliders.
+    </description>
+    <author email="info@glideport.aero" href="http://glideport.aero">
+        TipTop Software, Inc.
+    </author>
+    <content src="index.html" />
+    <access origin="*" />
+
+    <preference name="Orientation" value="portrait" />
+    <preference name="DisallowOverscroll" value="true" />
+    <preference name="HideKeyboardFormAccessoryBar" value="true" />
+    <!-- <preference name="HideKeyboardFormAccessoryBar" value="true" /> -->
+    <preference name="KeyboardShrinksView" value="true" />
+    <preference name="EnableViewportScale" value="false" />
+
+</widget>
