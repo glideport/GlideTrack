@@ -477,6 +477,10 @@ gt.Manager.prototype.start=function() {
     this.track=this._newTrack();
     this.hist.push(this.track);
   }
+
+  // prevent device from sleeping
+  window.plugins && window.plugins.powerManagement &&
+   window.plugins.powerManagement.acquire();
 }
 
 
@@ -490,6 +494,10 @@ gt.Manager.prototype.stop=function() {
     this.track.scheduleXfer(0); // force immediate xfer
   this._notifyChanged(this.track); // death tick
   this.geoloc.clearWatch(this.geowatch); this.geowatch=null;
+
+  // allow device to sleep
+  window.plugins && window.plugins.powerManagement &&
+   window.plugins.powerManagement.release();
 }
 
 

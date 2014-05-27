@@ -2,6 +2,11 @@
 
 TODO:
 
+
+Very simple IGC parser.
+Implements navigator.geolocation so it can be used during development
+when GPS is not available.
+
 =============================================================================*/
 "use strict";
 
@@ -74,6 +79,8 @@ gt.Sim.prototype.clearWatch=function(wid) {
 
 /**
   @return {undefined}
+
+  Feed next fix via onfix to whoever is listening, then schedule a next tick.
 */
 gt.Sim.prototype._tick=function() {
   if(this.cursor>=this.t.length) // ... done
