@@ -16,8 +16,8 @@ gt.Manager=function(){}
     purposes. If LOG_ALL is true, FIX_INTERVAL is ignored.
     NOTE: If LOG_ALL is turned on, then gt.Track::EXTENDED_VARS should
     also be true.  Default: false */
-// gt.Manager.prototype.LOG_ALL=false;
-gt.Manager.prototype.LOG_ALL=true;
+gt.Manager.prototype.LOG_ALL=false;
+// gt.Manager.prototype.LOG_ALL=true;
 
 /** @define {number} FIX_INTERVAL [ms]
     Time interval at which fixes should be logged.  4 sec is a good compromise.

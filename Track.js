@@ -39,8 +39,8 @@ gt.Track.prototype.EXTENDED_VARS=true;
 
 /** @define {boolean} DBGINFO
     If true DBG messages (xfer info) are included in the flight track. */
-// gt.Track.prototype.DBGINFO=false;
-gt.Track.prototype.DBGINFO=true;
+gt.Track.prototype.DBGINFO=false;
+// gt.Track.prototype.DBGINFO=true;
 
 
 /**

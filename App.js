@@ -28,6 +28,8 @@ gt.App.prototype.init=function() {
   this.manager =(new gt.Manager ).init();
   this.dash    =(new gt.Dash    ).init(this.manager);
 
+  this.setDebug(this.settings.debug);
+
   this.getDevid();
 
   // Detect platform
@@ -114,6 +116,7 @@ gt.App.prototype.registerDevidIfNeeded=function(next) {
 gt.App.prototype.exit=function(msg) {
   console.warn('Exiting: '+msg);
   navigator.app && navigator.app.exitApp && navigator.app.exitApp();
+  navigator.device && navigator.device.exitApp && navigator.device.exitApp();
   window.location='exit.html';
 }
 
@@ -140,6 +143,13 @@ gt.App.prototype.settingsUpdate=function() {
 }
 
 
+/**
+  @param {boolean} yorn
+*/
+gt.App.prototype.setDebug=function(yorn) {
+  this.manager.LOG_ALL=yorn;
+  if(this.manager.track) this.manager.track.DBGINFO=yorn;
+}
 
 //----------------------------------------------------------------------------
 // Class methods

@@ -44,6 +44,9 @@ gt.Settings.prototype.init=function() {
   this.glider=undefined;
   this.tail  =undefined;
 
+  var d=localStorage['gt:debug'];
+  this.debug =d!=null?d&&d!=='false':true;
+
   this.pullFromLS();
 
   return this;
@@ -119,8 +122,12 @@ gt.Settings.prototype.pushIntoUI=function() {
   this.setVal('cn'    ,this.cn    ||'');
   this.setVal('glider',this.glider||'');
   this.setVal('tail'  ,this.tail  ||'');
+
   this.$id('devid').textContent=gt.App.app.devid;
-  this.$id('url').textContent=this.API_URL;
+  this.$id('url'  ).textContent=this.API_URL;
+  if(this.$id('debug'))
+    this.$id('debug').textContent='DEBUG: '+(this.debug?'ON':'off');
+
   this.$id('save').disabled=!!this.xhr;
   this.$id('save').textContent='Save';
 }
@@ -295,6 +302,12 @@ gt.Settings.prototype.layout=function(parent, flavor) {
   x.textContent='';
   div.appendChild(x);
 
+  x=document.createElement('button');
+  x.id='Settings_debug';
+  x.textContent='Debug';
+  x[onaction]=this.doToggleDebug.bind(this);
+  div.appendChild(x);
+
   parent.appendChild(div);
   return this;
 }
@@ -379,6 +392,17 @@ gt.Settings.prototype.doChangeUrl=function() {
 */
 gt.Settings.prototype.doDevid=function() {
   // window.location='mailto:'+this.uname+'?subject=GT-devid&body='+gt.App.app.devid;
+}
+
+/**
+  @return {undefined}
+  noop for now...
+*/
+gt.Settings.prototype.doToggleDebug=function() {
+  this.debug=!this.debug;
+  gt.App.app.setDebug(this.debug);
+  localStorage['gt:debug']=this.debug;
+  this.$id('debug').textContent='DEBUG: '+(this.debug?'ON':'off');
 }
 
 
