@@ -35,5 +35,6 @@
     <!-- <preference name="splashscreen" value="img/gp-splash.png" /> -->
     <!-- <gap:plugin name="org.apache.cordova.console" /> -->
     <gap:plugin name="com.simplec.plugins.powermanagement" />
+    <gap:plugin name="de.appplant.cordova.plugin.email-compose" />
 
 </widget>

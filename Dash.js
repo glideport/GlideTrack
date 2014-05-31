@@ -74,7 +74,10 @@ gt.Dash.prototype.$id=function(name) {
   @return {undefined}
 */
 gt.Dash.prototype.pushIntoUI=function() {
-  var m=this.manager, running=m.isRunning();
+  var m=this.manager,
+     running=m.isRunning(),
+     track=m.track,
+     now=(new Date).getTime();
 
   // Read from manager, update field values
   this.$id('run').textContent=running?'STOP':'START';
@@ -98,9 +101,10 @@ gt.Dash.prototype.pushIntoUI=function() {
   this.$id('boxes').style.opacity=running?1:.33;
   this.$id('send').disabled=!running;
   this.$id('settings').disabled=running;
+  if(this.$id('email'))
+    this.$id('email').disabled=running || !track || !track.t.length;
 
   // Track-related display
-  var track=m.track, now=(new Date).getTime();
   if(track) {
     var next=(track.xferNextTime-now)/1000;
     this.$id('next').textContent=track.xhr?'send':
@@ -272,6 +276,18 @@ gt.Dash.prototype.layout=function(parent) {
   y[onaction]=this.doSettingsUpdate.bind(this);
   div.appendChild(y);
 
+  y=document.createElement('button');
+  y.textContent='Email IGC';
+  y.id='Dash_email';
+  // y.style.display='none';
+  y[onaction]=this.doEmailIgc.bind(this);
+  div.appendChild(y);
+
+  window.plugin && window.plugin.email &&
+    window.plugin.email.isServiceAvailable(function(gotmail) {
+      this.$id('email').style.display=null;
+    });
+
   this.pushIntoUI();
   return this;
 }
@@ -344,6 +360,7 @@ gt.Dash.prototype.doQuickMsg=function(msg) {
   @return {undefined}
 */
 gt.Dash.prototype.doSettingsUpdate=function() {
+  if(this.$id('settings').disabled) return;
   gt.App.app.settings.modalUpdate();
 }
 
@@ -369,6 +386,24 @@ gt.Dash.prototype.doRunStop=function() {
     if(!this.timer) this.timer=setInterval(this.pushIntoUI.bind(this),1000);
   }
   this.pushIntoUI();
+}
+
+
+gt.Dash.prototype.doEmailIgc=function() {
+  if(!this.$id('email') || this.$id('email').disabled) return;
+
+  var m=this.manager, track=m.track, settings=gt.App.app.settings;
+  if(!track) return;
+
+  var day=(new Date(track.date0)).toISOString().substr(0,10),
+      igc=track.getIGC();
+
+  window.plugin.email.open({
+    to: [settings.uname],
+    subject: 'IGC File '+day,
+    body: 'IGC file recorded by GlideTrack...',
+    attachments:['base64:'+day+'.igc//'+btoa(unescape(encodeURIComponent(igc)))]
+  });
 }
 
 

@@ -2,6 +2,7 @@
 
 TODO:
   * Other preferences, e.g.: logall, units
+  * On email change, clear all other fields
 
 The Settings class implements the settings GUI page.
 Settings include: uname, name, cn, glider, and tail.
@@ -253,8 +254,10 @@ gt.Settings.prototype.layout=function(parent, flavor) {
   var x,
      div=this.div=document.createElement('div');
   div.className='Settings_container';
+  parent.appendChild(div);
 
   div.appendChild(this._f('uname' ,'Email *'    ,'User name'   ));
+  this.$id('uname').onchange=this.doUnameChange.bind(this);
 
   // div.appendChild(this._f('passwd','Password *','Password'      ,'password'));
   // div.appendChild(this._f('conf'  ,'Confirm *' ,'Retype password','password'));
@@ -308,7 +311,6 @@ gt.Settings.prototype.layout=function(parent, flavor) {
   x[onaction]=this.doToggleDebug.bind(this);
   div.appendChild(x);
 
-  parent.appendChild(div);
   return this;
 }
 
@@ -403,6 +405,17 @@ gt.Settings.prototype.doToggleDebug=function() {
   gt.App.app.setDebug(this.debug);
   localStorage['gt:debug']=this.debug;
   this.$id('debug').textContent='DEBUG: '+(this.debug?'ON':'off');
+}
+
+
+gt.Settings.prototype.doUnameChange=function() {
+  // return;
+  if(this.getVal('uname').trim()===(this.uname||'').trim())
+    return;
+  this.setVal('name'  ,'');
+  this.setVal('cn'    ,'');
+  this.setVal('glider','');
+  this.setVal('tail'  ,'');
 }
 
 

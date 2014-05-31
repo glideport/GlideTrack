@@ -1,4 +1,4 @@
-@fileoverview API.md - 20140525
+@fileoverview API.md - 20140531
 `Copyright (c) 2014 TipTop Software, Inc.  All rights reserved.`
 [info@glideport.aero](mailto:info@glideport.aero)
 
@@ -13,7 +13,7 @@ API calls:
   * `dev` - Register a tracking device, or update device info.
   * `gt` - Push live IGC track data.
 
-The gt call is the heart of the API.  It is designed to be as minimal and as
+The `gt` call is the heart of the API.  It is designed to be as minimal and as
 simple as possible.  You essentially pass IGC data (fragment) in the body of an
 http POST request.  The arguments are the track token (i.e., a unique track
 identifier that you generate) and the devid (i.e., the unique  mobile device
@@ -25,18 +25,54 @@ GPS, send all unprocessed/raw GPS data, including ground speed, true track and
 fix quality in the IGC format and glideport.aero server will process data. The
 penalty is that in this case you are sending a lot more data across.
 
-The gt call should be invoked periodically as track data is being collected.
-Once every 1-3 minutes is a good interval.  If the gt call fails, e.g., because
-there is no cell connection, the track data must not be discarded, it should be
-sent in the next gt message.  In other words, when there is connectivity you
-send everything that has been accumulated since the last successful transfer.
-See Track.js file in the GT reference app implementation for how to format and
-send data, and how to handle retries.
+The `gt` call should be invoked periodically as track data is being collected.
+Once every 1-3 minutes is a good interval.  If the `gt` call fails, e.g.,
+because there is no cell connection, the track data must not be discarded, it
+should be sent in the next gt message.  In other words, when there is
+connectivity you send everything that has been accumulated since the last
+successful transfer.
 
 IGC format documentation:
 
   * [FAI.org Tech Spec](http://www.fai.org/component/phocadownload/category/855-technicalspecifications?download=7571:igc-fr-specification-with-al2-2013-12-31) - see Appendix A.
   * [Digested by Ian Forster-Lewis](http://carrier.csi.cam.ac.uk/forsterlewis/soaring/igc_file_format/igc_format_2008.html)
+
+__See Track.js in the GlideTrack reference implementation for an example how to
+use the `gt` call.__
+
+
+The main purpose of the `dev` call is to establish association between a
+tracking device and a GlidePort user.  Each tracking device is identified by a
+unique devid, which ideally should be tied to hardware id (e.g., MAC address or
+UDID).  If hardware id is not available (such as in the case of JavaScript),
+then devid can be generated using a random-number generation scheme and
+permanently recorded for subsequent uses.
+
+The simplest use of the API can completely forego use of the `dev` call as
+follows:
+
+  1. The mobile device generates devid and presents it to the user
+  2. The user enters gt:devid in the GlidePort Settings->Tracking page
+
+The mobile app can then use the `gt` call with that devid to send tracking data
+to GlidePort.
+
+However, a more user-friendly approach is to let the user register on the mobile
+device itself without having to enter tracker devid into GlidePort.  The `dev`
+call is used to register mobile device, query device info, or update device.
+
+Note that if a device is shared amongst GlidePort users, prior to a flight the
+user should update tracker registration to his/her user name, otherwise the
+track will be associated with the currently registered user for the device.
+
+__See Settings.js in the GlideTrack reference implementation for an example how
+to use the `dev` call.__
+
+
+![GP Cloud](img/gp-cloud.png)
+
+---
+
 
 ### noop
 
@@ -58,7 +94,7 @@ Example:
     => "ok"
 
 
-### devid
+### dev
 
 Register new mobile tracking device, query device info, or update device info if
 already registered.
@@ -69,7 +105,7 @@ already registered.
 
 Arguments:
 
-  * devid must be valid unique device id (e.g., randomly generated):
+  * devid must be valid unique device id (ideally tied to hardware id):
       * Exactly 16 characters long, base 64 (0-9,A-Z,a-z,-_)
       * The last character is Luhn checksum (base 64); see the checksum function
         below.
@@ -117,6 +153,7 @@ as `gt:<devid>`.
     => { ... }
     => null  - if it does not exist
 
+(Replace `test_tracker_device` with a valid devid.)
 
 ### gt (track)
 
@@ -145,6 +182,8 @@ Return:
 #### Example (new track):
 
     curl -H 'Content-Type: raw' -d 'A....\nHFDTE....\nHFPLTPILOT: Pez D. Spencer\n...' http://glideport.aero/api/gt/123456789012345g/test_tracker_device
+
+(Replace `test_tracker_device` with a valid devid.)
 
 #### Example (append to track):
 

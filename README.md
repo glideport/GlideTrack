@@ -19,14 +19,14 @@ in the email to complete the registration process.  If you don't receive the
 registration email, check your spam folder.
 
 Once you have your GlidePort.aero account, run GlideTrack on your mobile phone,
-enter your GlidePort login name, and click save.  If needed, update the glider
-information that will be associated with this tracker.
+enter your GlidePort login name (your email), and click save.  If needed, update
+the glider information that will be associated with this tracker.
 
 
 ## Tracking
 
-If you need to update your glider information, touch "Settings" prior to your
-flight.  Alternatively, you can edit your track in GlidePort.aero after the
+Prior to your flight, if you need to update your glider information, touch
+"Settings".  Alternatively, you can edit your track in GlidePort.aero after the
 flight.
 
 When you touch "START" to start tracking, GlideTrack uses the phone GPS to
@@ -54,7 +54,8 @@ Touch "STOP" when back on the ground.
     can buy cheap 12V-to-USB adapters and phone cradles on eBay.
 
 Here is what my setup looks like -- the phone is plugged into the main battery
-and has a good view of the sky.  
+and has a good view of the sky.
+
 ![iPhone mount](img/iPhone-mount1.jpg)  
 iPhone mount and power cord.  
 ![iPhone side view](img/iPhone-mount2.jpg)  
@@ -72,9 +73,9 @@ the api is the `gt` call.  It is designed to be as minimal and as simple as
 possible.  You essentially pass IGC data (fragment) in the body of an http POST
 request.  See Track.js for how it is used.
 
-GlideTrack is implemented in HTML5/JavaScript for simplicity.  It can be
-built into a native app using Cordova/PhoneGap.  The API can of course be
-used from any language.
+GlideTrack is implemented in HTML5/JavaScript for simplicity.  It does not use
+any third-party libraries.  It can be built into a native app using
+Cordova/PhoneGap.  The API can of course be used from any language.
 
 __NOTE__: GlideTrack currently only keeps tracks in memory, it does not save
 them.  In other words, if you kill the app or if the app crashes all tracking

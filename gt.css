@@ -42,7 +42,7 @@ BUTTON {
 }
 
 BUTTON:active {
-  background:pink;
+  /*background:pink;*/
   /*-webkit-transform: scale3d(0.9, 0.9, 1);*/
 }
 
@@ -206,6 +206,15 @@ BUTTON:disabled {
   position: absolute;
   right:7px;
   bottom:84px;
+  font-size: 16px;
+  z-index: 10;
+}
+
+#Dash_email {
+  display: block;
+  position: absolute;
+  left: 7px;
+  bottom: 84px;
   font-size: 16px;
   z-index: 10;
 }

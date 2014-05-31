@@ -201,7 +201,7 @@ gt.Track.prototype.getIGC=function(i0) {
   if(!i0) {
     i0=0;
     // Format header
-    s+="AGTd523\n";
+    s+="AGTe531\n";
     s+="HFDTE"+('0'+dd).substr(-2)+('0'+(mm+1)).substr(-2)+
        ('0'+(yy%100)).substr(-2)+"\n";
     if(this.pilot)  s+="HFPLTPILOT:"        +this.pilot +"\n";
