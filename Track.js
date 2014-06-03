@@ -39,8 +39,7 @@ gt.Track.prototype.EXTENDED_VARS=true;
 
 /** @define {boolean} DBGINFO
     If true DBG messages (xfer info) are included in the flight track. */
-gt.Track.prototype.DBGINFO=false;
-// gt.Track.prototype.DBGINFO=true;
+gt.Track.prototype.DBGINFO=false; // NOTE: overriden in init()
 
 
 /**
@@ -88,6 +87,8 @@ gt.Track.prototype.init=function(opt) {
   this.xferSuccessTime =undefined; // [ms] - last *success*
 
   this.fixCount=0;
+
+  this.DBGINFO=gt.App.app.settings.debug;
 
   return this;
 }
