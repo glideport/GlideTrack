@@ -20,8 +20,7 @@ gt.Settings=function(){}
     Server API URL.  Can be changed by the user by clicking on the element. */
 gt.Settings.prototype.API_URL=localStorage['gt:API_URL'] ||
                               'http://'+(window.location.host ||
-                              'test.glideport.aero')+'/api'; // Development
-                              // 'glideport.aero')+'/api';   // Deployment
+                              'glideport.aero')+'/api';   // Deployment
 
 /** @define {number} XHR_TIMEOUT
     Timeout for /dev api call. */
@@ -45,8 +44,9 @@ gt.Settings.prototype.init=function() {
   this.glider=undefined;
   this.tail  =undefined;
 
-  var d=localStorage['gt:debug'];
-  this.debug =d!=null?d&&d!=='false':true;
+  var d=parseInt(localStorage['gt:debug']);
+  if(isNaN(d)) d=0;
+  this.debug=d;
 
   this.pullFromLS();
 
@@ -403,7 +403,7 @@ gt.Settings.prototype.doDevid=function() {
 gt.Settings.prototype.doToggleDebug=function() {
   this.debug=!this.debug;
   gt.App.app.setDebug(this.debug);
-  localStorage['gt:debug']=this.debug;
+  localStorage['gt:debug']=0+this.debug;
   this.$id('debug').textContent='DEBUG: '+(this.debug?'ON':'off');
 }
 
