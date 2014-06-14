@@ -74,7 +74,7 @@ gt.Manager.prototype.WARM_MINTIME=10000;
     See above. */
 gt.Manager.prototype.WARM_MINCOUNT=5;
 
-/** @define {number} COLD_ALOWANCE [ms]
+/** @define {number} WARM_MAX_TIMEGAP [ms]
     If we do not see any good fixes for WARM_MAX_TIMEGAP when STATIONARY/MOVING,
     then we go back into COLD mode */
 gt.Manager.prototype.WARM_MAX_TIMEGAP=8000;
@@ -98,6 +98,10 @@ gt.Manager.prototype.GS_MOVING_TIME=60000;
     When we transition into MOVE mode, we record just prior
     MOVE_BACK_TIME fixes. */
 gt.Manager.prototype.MOVE_BACK_TIME=15000;
+
+/** @define {number} F2F_MAX_TIMEGAP [ms]
+    Maximum fix-to-fix time allowed for interpolation. */
+gt.Manager.prototype.F2F_MAX_TIMEGAP=8000;
 
 /** @enum {number} Mode */
 gt.Manager.prototype.Mode={
@@ -397,23 +401,32 @@ gt.Manager.prototype._processFix=function(idx) {
 
   Resample at FIX_INTERVAL using simple linear interpolation.
   In a real app we would want to do something fancier to take advantage of
-  all good GPS fixes, e.g., such as polynomial regression fit, that reduces
+  all good GPS fixes, e.g., such as polynomial regression fit to reduce
   GPS teleporting.
-  (Note though that the GPS data is already heavily Kalman-filtered, so no
-  point in doing that.)
+
+  Unfortunately, it is not possible to get raw GPS data, the OS always
+  processes it.  Usually this is bad for a flying application since the OS
+  assumes that you are walking or driving; the OS processing introduces
+  (sometimes significant) position and altitude errors.
+
+  Note that the GPS data is already heavily Kalman-filtered, so no
+  point in doing that.
 */
 gt.Manager.prototype._resampleAndRecord=function(idx) {
-  if(!idx) return; // first fix
+  if(!idx) return; // Skip first fix
+
   var ii1= idx   %this.CBSZ, t1=this.t[ii1];
   var ii0=(idx-1)%this.CBSZ, t0=this.t[ii0];
 
   // Force onto whole second boundary
   var t=Math.floor(t1/1000)*1000;
 
-  if(this.tt && this.tt+this.FIX_INTERVAL>t) { // Time for this fix?
+  if(this.tt && this.tt+this.FIX_INTERVAL>t) // Time for this fix?
     return; // ... not yet
-  }
+  if(t1-t0>this.F2F_MAX_TIMEGAP) // Fix-to-fix time gap too big?
+    return;
 
+  console.assert(t0<=t && t<=t1);
   var k=(t-t0)/(t1-t0),
       lat =this.lat [ii0]+(this.lat [ii1]-this.lat [ii0])*k,
       lon =this.lon [ii0]+(this.lon [ii1]-this.lon [ii0])*k,

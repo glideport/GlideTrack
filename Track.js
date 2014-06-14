@@ -148,6 +148,9 @@ gt.Track.prototype.addFix=function(d,lat,lon,galt,gs,trk,hacy,vacy) {
 
   console.debug('fix[%s]: +%s (%s, %s, %s)',
       i,t,lat.toPrecision(5),lon.toPrecision(6),(galt||NaN).toPrecision(4));
+   // Ignore bad fixes ... last line of defense, if it ever get this far
+   if((lat==0 && lon==0) || isNaN(galt)) return;
+
   this.t   [i]=t;
   this.lat [i]=lat;
   this.lon [i]=lon;
