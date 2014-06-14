@@ -121,7 +121,7 @@ gt.Manager.prototype.init=function() {
   // this.geoloc=(new gt.Sim).init('http://glideport.aero/igc/20130829-cai.igc');
 
   // Preallocate circular buffers
-  this.t   =new Array(this.CBSZ);
+  this.t   =new Array(this.CBSZ); // [ms]
   this.lat =new Array(this.CBSZ);
   this.lon =new Array(this.CBSZ);
   this.galt=new Array(this.CBSZ);
@@ -213,13 +213,14 @@ gt.Manager.prototype._onfix=function(loc) {
   this.statusTime=now;
   this.fix=null;
   var l=loc.coords,
-      t=loc.timestamp, lat=l.latitude, lon=l.longitude, galt=l.altitude,
+      t=loc.timestamp.getTime(),
+      lat=l.latitude, lon=l.longitude, galt=l.altitude,
       gs=l.speed, trk=l.heading, hacy=l.accuracy, vacy=l.altitudeAccuracy;
   var idx=this.cursor, ii=idx%this.CBSZ;
 
   if(!this.LOG_ALL) {
     // Obviously bad: drop stale and back-in-time fixes
-    if(now-t<this.STALE_TIME
+    if(now-t>this.STALE_TIME
        || (idx && this.t[(idx-1)%this.CBSZ]>t)) {
       // console.debug("dropping... stale or back-in-time");
       this.status='stale';
@@ -284,7 +285,7 @@ gt.Manager.prototype._onfix=function(loc) {
     hacy: hacy,
     vacy: vacy
   };
-
+  // console.debug("#%s: (%s,%s,%s,%s)",ii,t,lat,lon,galt);
   this._processFix(idx);
 }
 
@@ -415,7 +416,7 @@ gt.Manager.prototype._resampleAndRecord=function(idx) {
 
   var k=(t-t0)/(t1-t0),
       lat =this.lat [ii0]+(this.lat [ii1]-this.lat [ii0])*k,
-      lon =this.lon [ii0]+(this.lon [ii1]-this.lon [ii0])*k;
+      lon =this.lon [ii0]+(this.lon [ii1]-this.lon [ii0])*k,
       galt=this.galt[ii0]+(this.galt[ii1]-this.galt[ii0])*k,
       gs  =this.gs  [ii0]+(this.gs  [ii1]-this.gs  [ii0])*k;
 

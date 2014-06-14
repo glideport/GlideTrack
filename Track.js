@@ -33,7 +33,7 @@ gt.Track.prototype.XFER_RETRY_INTERVAL=30000;
 
 /** @define {boolean} EXTENDED_VARS
     Whenter to include all variables (including gs, trk, hacy, vacy) as part
-    of each fix, or just basic vars in each IGC B-record. Default: false. */
+    of each fix, or just basic vars in each IGC B-record. */
 // gt.Track.prototype.EXTENDED_VARS=false;
 gt.Track.prototype.EXTENDED_VARS=true;
 

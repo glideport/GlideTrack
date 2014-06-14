@@ -20,6 +20,7 @@ gt.Settings=function(){}
     Server API URL.  Can be changed by the user by clicking on the element. */
 gt.Settings.prototype.API_URL=localStorage['gt:API_URL'] ||
                               'http://'+(window.location.host ||
+                              // 'test.glideport.aero')+'/api';   // Development
                               'glideport.aero')+'/api';   // Deployment
 
 /** @define {number} XHR_TIMEOUT

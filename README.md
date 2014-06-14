@@ -1,13 +1,20 @@
 # GlideTrack Mobile Tracker
 
-GlideTrack mobile tracking app works in conjunction with the GlidePort.aero
-track visualization and analysis web app.  It sends realtime high-resolution
-tracking data to the ground.  It also allows you to send text messages that
-can be seen in GlidePort.aero.
+GlideTrack is a simple mobile tracker for glider flying.  It works in
+conjunction with the [GlidePort.aero](http://glideport.aero) track visualization
+and analysis web app. It sends high-resolution flight track data to
+GlidePort.aero so that spectators can view your flights in real-time (or later).
+GlideTrack also allows you to send text messages that can be seen in
+GlidePort.aero.
 
-This is a reference implementation.  It is intended to be an example app
-illustrating how to use the GlidePort.aero API.  However, GlideTrack is fully
-functional, you can use it to track your flights in realtime.
+This is a example implementation, the primary intent is to illustrate how to use
+the GlidePort.aero API.  However, GlideTrack is fully functional, you can use it
+to track your flights in real-time!
+
+<!--
+See [README.md](https://github.com/glideport/GlideTrack/blob/master/README.md)
+for more info.
+-->
 
 
 ## Setup
@@ -61,6 +68,16 @@ iPhone mount and power cord.
 ![iPhone side view](img/iPhone-mount2.jpg)  
 Side view.  The USB power adapter is visible in the bottom left.
 
+### Mobile Coverage
+
+Note that mobile tracking will not be as reliable as satellite tracking (e.g.,
+SPOT or inReach).  However, mountain flight tests in Colorado Rockies indicate
+that mobile tracking works suprisingly good.  Here are two typical mountain
+flights.  The pink/red circles indicate locations where GlideTrack was able to
+successfully send tracking data.
+
+![](img/coverage-20140504.png) ![](img/coverage-20140527.png)
+
 
 ## Development
 
@@ -96,6 +113,11 @@ important development mode defines are:
     to feed in simulated flight track locations instead of using the phone GPS.
 
 __Important__: These four values should be switched to default for deployment.
+
+
+## Terms of Use
+
+See [TERMS.md](TERMS.md).
 
 ---
 Copyright (c) 2014 TipTop Software, Inc., All Rights Reserved.
