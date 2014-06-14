@@ -1,8 +1,5 @@
 /** @fileoverview gt.css
 
-TODO:
-  * Cleanup
-
 =============================================================================*/
 * {
   -moz-box-sizing:border-box; box-sizing: border-box;
@@ -29,7 +26,8 @@ body {
 }
 
 BUTTON {
-/*  -webkit-tap-highlight-color: rgba(0,0,0,0);
+/*
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
   -webkit-tap-highlight-color: transparent;  For some Androids
 */
   -webkit-tap-highlight-color: rgba(255,0,0,0.5);
@@ -37,13 +35,10 @@ BUTTON {
   border-radius: 0;
   color: rgb(21, 125, 251);
   background: rgb(248, 248, 248);
-  /*font-weight:300;*/
   font-weight:500;
 }
 
 BUTTON:active {
-  /*background:pink;*/
-  /*-webkit-transform: scale3d(0.9, 0.9, 1);*/
 }
 
 BUTTON:disabled {
@@ -53,24 +48,15 @@ BUTTON:disabled {
 
 /*---------------------------------------------------------------------------*/
 .Dash_container {
-  /*position: fixed;*/
   position: absolute;
   left:0; right:0; top:0; bottom:0;
-  /*position: relative;*/
-  /*width:100%; height:100%;*/
 
   padding-top:42px;
-/*  background: rgba(200,200,255,.3);
-  border: 1px solid black;
-  border-radius: 10px;
-*/
 }
 
 
 #Dash_boxes {
   margin-top:30px;
-  /*display:flex;*/
-  /*flex-flow:row;*/
   position: absolute;
   bottom: 0;
 }
@@ -78,14 +64,10 @@ BUTTON:disabled {
 .Dash_box_line {
   width: 100%;
   text-align: center;
-  /*width: 320px;*/
-  /*background:pink;*/
-  /*overflow-x: hidden;*/
   overflow-x: visible;
 }
 
 .Dash_vbox {
-  /*flex: 1;*/
   border: 1px solid black;
   border-collapse: collapse;
   display:inline-block;
@@ -96,7 +78,6 @@ BUTTON:disabled {
 }
 
 .Dash_vbox_label {
-  /*height: 10px;*/
   background: #666;
   color: white;
   padding:1px;
@@ -106,7 +87,6 @@ BUTTON:disabled {
 }
 
 .Dash_vbox_val {
-  /*height: 12px;*/
   min-height:20px;
   min-width: 40px;
   padding:1px;
@@ -114,7 +94,6 @@ BUTTON:disabled {
 }
 
 .Dash_vbox_unit {
-  /*height: 10px;*/
   background: #666;
   color: white;
   padding:1px;
@@ -127,7 +106,6 @@ BUTTON:disabled {
   width: 100px;
 }
 #Dash_vbox_status {
-  /*width: 150px;*/
   width: 64px;
 }
 #Dash_vbox_time {
@@ -146,20 +124,16 @@ BUTTON:disabled {
 
 
 #Dash_run {
-  /*position: absolute;*/
   display:block;
   width: 100%;
   font-size: 24px;
-  /*bottom: 0;*/
   line-height: 42px;
 }
 
 
 .Dash_messagebox {
   margin-top: 64px;
-/*  position: absolute;
-  bottom: 0;
-*/}
+}
 
 #Dash_clearmsg {
   cursor: pointer;
@@ -180,11 +154,9 @@ BUTTON:disabled {
   width: 80px;
   height: 26px;
   font-size: 16px;
-  /*padding: 5px;*/
 }
 
 #Dash_quickmsg {
-  /*border: 1px solid black;*/
   margin-top: 5px;
   border-top: 1px solid lightgray;
 }
@@ -192,13 +164,11 @@ BUTTON:disabled {
 #Dash_quickmsg DIV {
   cursor:pointer;
   text-overflow: ellipsis;
-  /*line-height: 20px;*/
   padding: 3px;
   font-size: 16px;
   border-bottom: 1px solid lightgray;
 }
 #Dash_quickmsg DIV:hover {
-  /*background:yellow;*/
 }
 
 #Dash_settings {
@@ -231,8 +201,6 @@ BUTTON:disabled {
   padding: 10px;
   padding-top: 30px;
   background: white;
-  /*background: rgba(255,255,255,.9);*/
-  /*background:cyan;*/
 }
 
 .Settings_container label {
@@ -264,10 +232,8 @@ BUTTON:disabled {
   font-size: 16px;
   margin-top: 20px;
   text-align: center;
-  /*background: yellow;*/
   font-weight: bold;
   padding: 7px;
-  /*border: 1px solid red;*/
 }
 
 #Settings_cancel, #Settings_save {

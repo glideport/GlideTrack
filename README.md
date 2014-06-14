@@ -7,9 +7,11 @@ GlidePort.aero so that spectators can view your flights in real-time (or later).
 GlideTrack also allows you to send text messages that can be seen in
 GlidePort.aero.
 
-This is a example implementation, the primary intent is to illustrate how to use
-the GlidePort.aero API.  However, GlideTrack is fully functional, you can use it
-to track your flights in real-time!
+This is a reference implementation, it illustrates how to use the GlidePort.aero
+API.  GlideTrack source code is available at
+[github.com/glideport/GlideTrack](https://github.com/glideport/GlideTrack).
+However, GlideTrack is fully functional, you can use it to track your flights in
+real-time!
 
 <!--
 See [README.md](https://github.com/glideport/GlideTrack/blob/master/README.md)
@@ -19,11 +21,11 @@ for more info.
 
 ## Setup
 
-Make sure that you have a GlidePort.aero user account.  To create a user account
-go to [GlidPort.aero](http://glideport.aero) and register.  When you submit your
-registration information you will receive an activation email.  Click the link
-in the email to complete the registration process.  If you don't receive the
-registration email, check your spam folder.
+Create a GlidePort.aero user account if you do not already have it.  To create a
+user account go to [GlidPort.aero](http://glideport.aero) and register.  When
+you submit your registration information you will receive an activation email.
+Click the link in the email to complete the registration process.  If you don't
+receive the registration email, check your spam folder.
 
 Once you have your GlidePort.aero account, run GlideTrack on your mobile phone,
 enter your GlidePort login name (your email), and click save.  If needed, update
@@ -32,21 +34,21 @@ the glider information that will be associated with this tracker.
 
 ## Tracking
 
-Prior to your flight, if you need to update your glider information, touch
+Prior to your flight, if you need to update your glider information, tap
 "Settings".  Alternatively, you can edit your track in GlidePort.aero after the
 flight.
 
-When you touch "START" to start tracking, GlideTrack uses the phone GPS to
-record your track and to periodically send it to GlidePort.aero.  If there is no
-cellular phone connectivity, it will keep retrying until it is able to
-successfully send data.  If you stop tracking and start again within 15 minutes,
-the old track will be continued.
+When you tap "START" to start tracking, GlideTrack uses the phone GPS to record
+your track and to periodically send it to GlidePort.aero, nominally every 2
+minutes.  If there is no cellular phone connectivity, it will keep retrying
+until it is able to successfully send data.  If you stop tracking and start
+again within 15 minutes, the old track will be continued.
 
-To send a message, enter your message and touch "Send".  To resend a recent
-message, touch the message so that it appears in the message box, and touch
-"Send".  Note: messages can only be sent when tracking is ON.
+To send a message, enter your message and tap "Send".  To resend a recent
+message, tap the message so that it appears in the message box, and tap "Send".
+Note that messages can only be sent when tracking is ON.
 
-Touch "STOP" when back on the ground.
+Tap "STOP" when back on the ground.
 
 
 ### Tips and Tricks
@@ -68,22 +70,36 @@ iPhone mount and power cord.
 ![iPhone side view](img/iPhone-mount2.jpg)  
 Side view.  The USB power adapter is visible in the bottom left.
 
+
 ### Mobile Coverage
+
+GlideTrack is tolerant to poor cell-phone coverage.  When there is no coverage,
+GlideTrack keeps recording tracking data.  When it is finally able to send data,
+it sends everything that has been collected up to that point.
 
 Note that mobile tracking will not be as reliable as satellite tracking (e.g.,
 SPOT or inReach).  However, mountain flight tests in Colorado Rockies indicate
-that mobile tracking works suprisingly good.  Here are two typical mountain
-flights.  The pink/red circles indicate locations where GlideTrack was able to
-successfully send tracking data.
+that mobile tracking works suprisingly well.  Here are two typical mountain
+flights at high altitudes.  The pink/red circles indicate locations where
+GlideTrack was able to successfully send tracking data.
 
-![](img/coverage-20140504.png) ![](img/coverage-20140527.png)
+![](img/coverage-20140504.png) | ![](img/coverage-20140527.png)
+
+
+### Debug Mode
+
+The "DEBUG" mode can be turned on in the Settings screen.  In the debug mode
+successful data transfer events are recorded in the flight track.  This is
+useful for analyzing mobile coverage in your flight area.  Also, in this mode
+all GPS fixes (typically at 1s interval) are sent, as opposed to fixes
+interpolated at 4s interval.
 
 
 ## Development
 
 The GlidePort.aero API is open!  Any gliding software can use the API to send
 high-resolution track data to GlidePort.aero so that spectators can follow
-flights in near-realtime.
+flights in real-time.
 
 The GlidePort hi-res track API is described in [API.md](API.md). The heart of
 the api is the `gt` call.  It is designed to be as minimal and as simple as
