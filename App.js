@@ -113,11 +113,10 @@ gt.App.prototype.registerDevidIfNeeded=function(next) {
   @param {string} msg
   @return {undefined}
 */
-gt.App.prototype.exit=function(msg) {
-  console.warn('Exiting: '+msg);
+gt.App.prototype.exit=function(page) {
   navigator.app && navigator.app.exitApp && navigator.app.exitApp();
   navigator.device && navigator.device.exitApp && navigator.device.exitApp();
-  window.location='exit.html';
+  window.location=(page||'exit')+'.html';
 }
 
 
@@ -127,7 +126,7 @@ gt.App.prototype.exit=function(msg) {
 gt.App.prototype.run=function() {
   // alert('ok to go');
   this.registerDevidIfNeeded(function(err) {
-    if(err) return this.exit(err);
+    if(err) return this.exit('setup');
 
     // Show Dash...
     this.dash.layout();
@@ -217,6 +216,31 @@ gt.App.RUN=function() {
   gt.App.app=(new gt.App);
   gt.App.app.init();
   gt.App.app.run();
+}
+
+
+/**
+  @return {undefined}
+*/
+gt.App.RESTART=function() {
+  window.location='index.html';
+  // gt.App.app && gt.App.app.destroy();
+  // gt.App.app=undefined;
+  // gt.App.RUN();
+}
+
+
+/**
+  @param {string} msg
+  @param {function} next
+*/
+gt.App.alert=function(msg,next) {
+  console.trace();
+  console.debug("ALERT: "+msg);
+  if(navigator.notification && navigator.notification.alert)
+    return navigator.notification.alert(msg,next);
+  alert(msg);
+  next && next();
 }
 
 

@@ -128,7 +128,7 @@ gt.Settings.prototype.pushIntoUI=function() {
   this.$id('devid').textContent=gt.App.app.devid;
   this.$id('url'  ).textContent=this.API_URL;
   if(this.$id('debug'))
-    this.$id('debug').textContent='DEBUG: '+(this.debug?'ON':'off');
+    this.$id('debug').textContent='Diagnostic: '+(this.debug?'ON':'off');
 
   this.$id('save').disabled=!!this.xhr;
   this.$id('save').textContent='Save';
@@ -275,7 +275,8 @@ gt.Settings.prototype.layout=function(parent, flavor) {
   if(flavor!=='check') {
     x=document.createElement('button');
     x.id='Settings_cancel';
-    x.innerHTML=flavor==='register'?'Quit':'Cancel';
+    // x.innerHTML=flavor==='register'?'Quit':'Cancel';
+    x.innerHTML='Cancel';
     x[onaction]=this.doCancel.bind(this);
     div.appendChild(x);
   }
@@ -306,11 +307,19 @@ gt.Settings.prototype.layout=function(parent, flavor) {
   x.textContent='';
   div.appendChild(x);
 
-  x=document.createElement('button');
-  x.id='Settings_debug';
-  x.textContent='Debug';
-  x[onaction]=this.doToggleDebug.bind(this);
-  div.appendChild(x);
+  if(flavor!=='register') {
+    x=document.createElement('button');
+    x.id='Settings_debug';
+    x.textContent='Diag';
+    x[onaction]=this.doToggleDebug.bind(this);
+    div.appendChild(x);
+
+    x=document.createElement('button');
+    x.id='Settings_reset';
+    x.textContent='RESET';
+    x[onaction]=this.doReset.bind(this);
+    div.appendChild(x);
+  }
 
   return this;
 }
@@ -405,7 +414,7 @@ gt.Settings.prototype.doToggleDebug=function() {
   this.debug=!this.debug;
   gt.App.app.setDebug(this.debug);
   localStorage['gt:debug']=0+this.debug;
-  this.$id('debug').textContent='DEBUG: '+(this.debug?'ON':'off');
+  this.$id('debug').textContent='Diagnostic: '+(this.debug?'ON':'off');
 }
 
 
@@ -417,6 +426,21 @@ gt.Settings.prototype.doUnameChange=function() {
   this.setVal('cn'    ,'');
   this.setVal('glider','');
   this.setVal('tail'  ,'');
+}
+
+
+gt.Settings.prototype.doReset=function() {
+  delete localStorage['gt:uname' ];
+  delete localStorage['gt:name'  ];
+  delete localStorage['gt:cn'    ];
+  delete localStorage['gt:glider'];
+  delete localStorage['gt:tail'  ];
+
+  delete localStorage['gt:registered'];
+
+  gt.App.alert("Cleared settings.",function() {
+    gt.App.RESTART();
+  });
 }
 
 

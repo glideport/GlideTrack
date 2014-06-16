@@ -66,7 +66,8 @@ Here is what my setup looks like -- the phone is plugged into the main battery
 and has a good view of the sky.
 
 ![iPhone mount](img/iPhone-mount1.jpg)  
-iPhone mount and power cord.  
+iPhone mount and power cord.
+
 ![iPhone side view](img/iPhone-mount2.jpg)  
 Side view.  The USB power adapter is visible in the bottom left.
 
@@ -86,10 +87,10 @@ GlideTrack was able to successfully send tracking data.
 ![](img/coverage-20140504.png) | ![](img/coverage-20140527.png)
 
 
-### Debug Mode
+### Diagnostic Mode
 
-The "DEBUG" mode can be turned on in the Settings screen.  In the debug mode
-successful data transfer events are recorded in the flight track.  This is
+The diagnostic mode can be turned on in the Settings screen.  In the diagnostic
+mode successful data transfer events are recorded in the flight track.  This is
 useful for analyzing mobile coverage in your flight area.  Also, in this mode
 all GPS fixes (typically at 1s interval) are sent, as opposed to fixes
 interpolated at 4s interval.

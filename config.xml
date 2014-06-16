@@ -37,4 +37,5 @@
     <gap:plugin name="com.simplec.plugins.powermanagement" />
     <gap:plugin name="de.appplant.cordova.plugin.email-compose" />
 
+
 </widget>

@@ -121,6 +121,7 @@ gt.Manager.prototype.init=function() {
   this.geowatch=null;
 
   this.geoloc=navigator.geolocation;
+  this._geoerr=false; // Used to prevent double error reporting
   // Development - sim track
   // this.geoloc=(new gt.Sim).init('http://glideport.aero/igc/20130829-cai.igc');
 
@@ -168,9 +169,9 @@ gt.Manager.prototype._newTrack=function() {
     tail  : s.tail
   });
   track.onharderror=function(err) {
-    // TODO: handle more gracefully
-    alert("Hard Error: "+err+"\n\nBailing out!");
-    gt.App.app.exit(err);
+    gt.app.alert("Hard Error: "+err+"\n\nBailing out!",function() {
+      gt.App.app.exit();
+    });
   }
   track.onxfer=this._notifyChanged.bind(this,track);
   return track;
@@ -181,7 +182,9 @@ gt.Manager.prototype._newTrack=function() {
   @return {undefined}
 */
 gt.Manager.prototype.destroy=function() {
-  if(this.geowatch) this.geoloc.clearWatch(this.geowatch); delete this.geowatch;
+  if(this.geowatch) {
+    this.geoloc.clearWatch(this.geowatch); delete this.geowatch;
+  }
   this.geoloc.destroy && this.geoloc.destroy();
 }
 
@@ -193,9 +196,12 @@ gt.Manager.prototype.destroy=function() {
 gt.Manager.prototype._onerr=function(err) {
   console.warn('GEOERR[%d]: %s',err.code,err.message);
   if(err.code===1) {
+    if(this._geoerr) return; // Already reported
+    this._geoerr=true;
     // code: 1, message: "User denied Geolocation"
-    alert("GlideTrack cannot run without GPS.  Goodbye.");
-    gt.App.app.exit('No GPS');
+    gt.App.alert("GlideTrack cannot run without GPS.  Goodbye.", function() {
+      gt.App.app.exit('nogps');
+    });
   }
   // code 2: Network location provider at 'https://www.googleapis.com/' : Returned error code 404.
   // code 3: Timeout expired
@@ -477,6 +483,7 @@ gt.Manager.prototype.start=function() {
       timeout: 10000,
       maximumAge: 1000
   });
+  this._geoerr=false;
 
   // Restart last track?
   var last=this.hist.last();
@@ -508,6 +515,7 @@ gt.Manager.prototype.stop=function() {
     this.track.scheduleXfer(0); // force immediate xfer
   this._notifyChanged(this.track); // death tick
   this.geoloc.clearWatch(this.geowatch); this.geowatch=null;
+  this._geoerr=false;
 
   // allow device to sleep
   window.plugins && window.plugins.powerManagement &&
