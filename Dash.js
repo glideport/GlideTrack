@@ -83,12 +83,16 @@ gt.Dash.prototype.pushIntoUI=function() {
   this.$id('run').textContent=running?'STOP':'START';
   this.$id('mode').textContent=m.mode&&m.ModeStr[m.mode]||'?';
   this.$id('status').textContent=m.status||'?';
-  this.$id('time').textContent=m.statusTime&&new Date(m.statusTime).toTimeString().substr(0,8)||'?';
+  this.$id('time').textContent=m.statusTime &&
+                      new Date(m.statusTime).toTimeString().substr(0,8)||'?';
   if(m.fix) {
-    this.$id('loc').textContent=m.fix.lat.toPrecision(7)+','+m.fix.lon.toPrecision(8);
+    this.$id('loc').textContent=m.fix.lat.toPrecision(7)+','+
+                                m.fix.lon.toPrecision(8);
     this.$id('alt').textContent=Math.round(m.fix.galt)||'?';
-    this.$id('gs' ).textContent=m.fix.gs ==null||isNaN(m.fix.gs )?'?':Math.round(m.fix.gs );
-    this.$id('trk').textContent=m.fix.trk==null||isNaN(m.fix.trk)?'?':Math.round(m.fix.trk);
+    this.$id('gs' ).textContent=m.fix.gs ==null||isNaN(m.fix.gs ) ?
+                                '?' : Math.round(m.fix.gs );
+    this.$id('trk').textContent=m.fix.trk==null||isNaN(m.fix.trk) ?
+                                '?' : Math.round(m.fix.trk);
   } else {
     this.$id('loc').textContent='?';
     this.$id('alt').textContent='?';
@@ -113,15 +117,19 @@ gt.Dash.prototype.pushIntoUI=function() {
     var last=(now-track.xferSuccessTime)/1000;
     this.$id('last').textContent=last!=null&&!isNaN(last)?gt.fmt_dt(last):'-';
 
-    this.$id('debug').textContent=(new Date).toTimeString().substr(0,8)+
-      ' '+track.cursor+'/'+track.t.length+
-      ' s'+track.xferSuccessCount+
-      ' e'+(track.xferErrorCount-track.xferTimeoutCount)+
-      ' t'+track.xferTimeoutCount+
-      ' w'+track.xferWaitCount+
-      ' a'+track.xferAbortCount+
-      ' #'+track.xferCount+
-      ' '+(track.token||'-');
+    // if(gt.App.app.settings.debug) {
+      this.$id('debug').textContent=(new Date).toTimeString().substr(0,8)+
+        ' '+track.cursor+'/'+track.t.length+
+        ' s'+track.xferSuccessCount+
+        ' e'+(track.xferErrorCount-track.xferTimeoutCount)+
+        ' t'+track.xferTimeoutCount+
+        ' w'+track.xferWaitCount+
+        ' a'+track.xferAbortCount+
+        ' x'+track.xferCount+
+        ' '+(track.token||'-');
+    // } else {
+    //   this.$id('debug').textContent='';
+    // }
     if(this.timer && !this.manager.isRunning()
         && !track.xhr && !track.xferNextTime) {
       clearInterval(this.timer); delete this.timer;

@@ -204,7 +204,14 @@ gt.Manager.prototype._onerr=function(err) {
     });
   }
   // code 2: Network location provider at 'https://www.googleapis.com/' : Returned error code 404.
+
   // code 3: Timeout expired
+  if(err.code===3) {
+    this._geoerr=true;
+    gt.App.alert("Somethings is wrong, not getting GPS fixes.", function() {
+      gt.App.app.exit('nogps');
+    });
+  }
 }
 
 
@@ -223,7 +230,7 @@ gt.Manager.prototype._onfix=function(loc) {
   this.statusTime=now;
   this.fix=null;
   var l=loc.coords,
-      t=loc.timestamp.getTime(),
+      t=typeof loc.timestamp==='number'?loc.timestamp:loc.timestamp.getTime(),
       lat=l.latitude, lon=l.longitude, galt=l.altitude,
       gs=l.speed, trk=l.heading, hacy=l.accuracy, vacy=l.altitudeAccuracy;
   var idx=this.cursor, ii=idx%this.CBSZ;
@@ -480,7 +487,7 @@ gt.Manager.prototype.start=function() {
     this._onfix.bind(this),
     this._onerr.bind(this), {
       enableHighAccuracy: true,
-      timeout: 10000,
+      timeout: 30000,
       maximumAge: 1000
   });
   this._geoerr=false;

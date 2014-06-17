@@ -84,7 +84,7 @@ that mobile tracking works suprisingly well.  Here are two typical mountain
 flights at high altitudes.  The pink/red circles indicate locations where
 GlideTrack was able to successfully send tracking data.
 
-![](img/coverage-20140504.png) | ![](img/coverage-20140527.png)
+![](img/coverage-20140504.jpg) | ![](img/coverage-20140527.jpg)
 
 
 ### Diagnostic Mode
