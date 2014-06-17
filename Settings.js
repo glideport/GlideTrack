@@ -201,7 +201,7 @@ gt.Settings.prototype.$id=function(name) {
 */
 gt.Settings.prototype._f=function(name,label,placeholder,type) {
   var div=document.createElement('div');
-  div.className='Settings_'+name;
+  div.className='Settings_'+name+' Settings_field';
 
   var ll=document.createElement('label');
   ll.textContent=label;
@@ -349,9 +349,11 @@ gt.Settings.prototype.delayout=function() {
 // Actions
 //----------------------------------------------------------------------------
 /**
-  @return {undefined}
+  @param {Event} event
 */
-gt.Settings.prototype.doSave=function() {
+gt.Settings.prototype.doSave=function(event) {
+  event.stopPropagation();event.preventDefault();
+
   this.pullFromUI();
   this.$id('error'  ).textContent='';
   this.$id('message').textContent="Saving...";
@@ -378,9 +380,11 @@ gt.Settings.prototype.doSave=function() {
 
 
 /**
-  @return {undefined}
+  @param {Event} event
 */
-gt.Settings.prototype.doCancel=function() {
+gt.Settings.prototype.doCancel=function(event) {
+  event.stopPropagation();event.preventDefault();
+
   this.delayout();
   this.xhr && this.xhr.abort();
   this.oncancel && this.oncancel(this);
@@ -388,9 +392,11 @@ gt.Settings.prototype.doCancel=function() {
 
 
 /**
-  @return {undefined}
+  @param {Event} event
 */
-gt.Settings.prototype.doChangeUrl=function() {
+gt.Settings.prototype.doChangeUrl=function(event) {
+  event.stopPropagation();event.preventDefault();
+
   var url=prompt('Enter API URL',this.API_URL);
   if(!url) return;
   this.API_URL=localStorage['gt:API_URL']=url;
@@ -399,18 +405,21 @@ gt.Settings.prototype.doChangeUrl=function() {
 
 
 /**
-  @return {undefined}
+  @param {Event} event
   noop for now...
 */
-gt.Settings.prototype.doDevid=function() {
+gt.Settings.prototype.doDevid=function(event) {
+  event.stopPropagation();event.preventDefault();
+
   // window.location='mailto:'+this.uname+'?subject=GT-devid&body='+gt.App.app.devid;
 }
 
 /**
-  @return {undefined}
-  noop for now...
+  @param {Event} event
 */
-gt.Settings.prototype.doToggleDebug=function() {
+gt.Settings.prototype.doToggleDebug=function(event) {
+  event.stopPropagation();event.preventDefault();
+
   this.debug=!this.debug;
   gt.App.app.setDebug(this.debug);
   localStorage['gt:debug']=0+this.debug;
@@ -418,7 +427,12 @@ gt.Settings.prototype.doToggleDebug=function() {
 }
 
 
-gt.Settings.prototype.doUnameChange=function() {
+/**
+  @param {Event} event
+*/
+gt.Settings.prototype.doUnameChange=function(event) {
+  event.stopPropagation();event.preventDefault();
+
   // return;
   if(this.getVal('uname').trim()===(this.uname||'').trim())
     return;
@@ -429,7 +443,12 @@ gt.Settings.prototype.doUnameChange=function() {
 }
 
 
-gt.Settings.prototype.doReset=function() {
+/**
+  @param {Event} event
+*/
+gt.Settings.prototype.doReset=function(event) {
+  event.stopPropagation();event.preventDefault();
+
   delete localStorage['gt:uname' ];
   delete localStorage['gt:name'  ];
   delete localStorage['gt:cn'    ];

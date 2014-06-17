@@ -315,9 +315,10 @@ gt.Dash.prototype.layout=function(parent) {
 // Actions
 //----------------------------------------------------------------------------
 /**
-  @return {undefined}
+  @param {Event} event
 */
-gt.Dash.prototype.doMessageSend=function() {
+gt.Dash.prototype.doMessageSend=function(event) {
+  event.stopPropagation();event.preventDefault();
   if(this.$id('send').disabled) return;
 
   var msg=this.$id('message').value.trim();
@@ -348,9 +349,10 @@ gt.Dash.prototype.doMessageSend=function() {
 
 
 /**
-  @return {undefined}
+  @param {Event} event
 */
-gt.Dash.prototype.doMessageClear=function() {
+gt.Dash.prototype.doMessageClear=function(event) {
+  event.stopPropagation();event.preventDefault();
   this.$id('message').value='';
   this.$id('message').focus();
 }
@@ -365,18 +367,20 @@ gt.Dash.prototype.doQuickMsg=function(msg) {
 
 
 /**
-  @return {undefined}
+  @param {Event} event
 */
-gt.Dash.prototype.doSettingsUpdate=function() {
+gt.Dash.prototype.doSettingsUpdate=function(event) {
+  event.stopPropagation();event.preventDefault();
   if(this.$id('settings').disabled) return;
   gt.App.app.settings.modalUpdate();
 }
 
 
 /**
-  @return {undefined}
+  @param {Event} event
 */
-gt.Dash.prototype.doRunStop=function() {
+gt.Dash.prototype.doRunStop=function(event) {
+  event.stopPropagation();event.preventDefault();
   gt.beep();
   if(this.manager.isRunning()) {
     this.manager.stop();
@@ -397,7 +401,11 @@ gt.Dash.prototype.doRunStop=function() {
 }
 
 
-gt.Dash.prototype.doEmailIgc=function() {
+/**
+  @param {Event} event
+*/
+gt.Dash.prototype.doEmailIgc=function(event) {
+  event.stopPropagation();event.preventDefault();
   if(!this.$id('email') || this.$id('email').disabled) return;
 
   var m=this.manager, track=m.track, settings=gt.App.app.settings;

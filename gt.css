@@ -16,15 +16,6 @@ body {
 
 
 /*---------------------------------------------------------------------------*/
-#ss_button {
-  position: absolute;
-  display:block;
-  width: 100%;
-  font-size: 24px;
-  bottom: 0;
-  line-height: 42px;
-}
-
 BUTTON {
 /*
   -webkit-tap-highlight-color: rgba(0,0,0,0);
@@ -36,14 +27,37 @@ BUTTON {
   color: rgb(21, 125, 251);
   background: rgb(248, 248, 248);
   font-weight:500;
+
+  -webkit-user-select: none;
+  user-select: none;
+
+  -webkit-transition-duration: .15s;
+  -webkit-transition-property: -webkit-transform background;
+  /*-webkit-transform: rotate(360deg);*/
+  -webkit-transform: scale(1);
 }
 
 BUTTON:active {
+  -webkit-transition-duration: .15s;
+  -webkit-transition-property: -webkit-transform background;
+  /*-webkit-transform: rotate(360deg);*/
+  -webkit-transform: scale(1.1);
+  z-index:10000;
+  background:beige;
+  border-color:#ff2d55;
+  color:#ff2d55;
 }
 
 BUTTON:disabled {
   background: white;
   opacity: .5;
+}
+
+INPUT {
+  -webkit-appearance: none;
+  border-radius:0;
+  border: none;
+  border-bottom: solid #ccc 1px;
 }
 
 /*---------------------------------------------------------------------------*/
@@ -59,6 +73,9 @@ BUTTON:disabled {
   margin-top:30px;
   position: absolute;
   bottom: 0;
+
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 .Dash_box_line {
@@ -132,7 +149,7 @@ BUTTON:disabled {
 
 
 .Dash_messagebox {
-  margin-top: 64px;
+  margin-top: 60px;
 }
 
 #Dash_clearmsg {
@@ -152,7 +169,7 @@ BUTTON:disabled {
 #Dash_send {
   margin-left: 10px;
   width: 80px;
-  height: 26px;
+  height: 32px;
   font-size: 16px;
 }
 
@@ -168,7 +185,9 @@ BUTTON:disabled {
   font-size: 16px;
   border-bottom: 1px solid lightgray;
 }
-#Dash_quickmsg DIV:hover {
+#Dash_quickmsg DIV:active/*, #Dash_quickmsg DIV:hover*/ {
+  background:beige;
+  color:#ff2d55;
 }
 
 #Dash_settings {
@@ -178,6 +197,7 @@ BUTTON:disabled {
   bottom:84px;
   font-size: 16px;
   z-index: 10;
+  height: 32px;
 }
 
 #Dash_email {
@@ -187,6 +207,7 @@ BUTTON:disabled {
   bottom: 84px;
   font-size: 16px;
   z-index: 10;
+  height: 32px;
 }
 
 #Dash_debug {
@@ -203,13 +224,20 @@ BUTTON:disabled {
   background: white;
 }
 
+.Settings_field {
+  margin-bottom: 6px;
+}
+
 .Settings_container label {
   display: block;
   margin-top: 5px;
+  font-size:14px;
+  font-weight: bold;
 }
 .Settings_container input {
   display: block;
   width: 100%;
+  font-size:14px;
 }
 
 .Settings_cn, .Settings_tail {
@@ -237,10 +265,10 @@ BUTTON:disabled {
 }
 
 #Settings_cancel, #Settings_save {
-  margin: 50px 5px 10px 5px;
+  margin: 32px 5px 10px 5px;
   width: calc(50% - 10px);
   font-size: 18px;
-  padding: 3px;
+  height: 32px;
 }
 
 #Settings_devid, #Settings_url {
