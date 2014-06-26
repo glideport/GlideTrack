@@ -103,6 +103,12 @@ gt.Manager.prototype.MOVE_BACK_TIME=15000;
     Maximum fix-to-fix time allowed for interpolation. */
 gt.Manager.prototype.F2F_MAX_TIMEGAP=8000;
 
+/** @define {number} STATIONARY_NOTIFY [ms]
+    Notify user when transitioning MOVING->STATIONARY if we were in moving
+    for longer than STATIONARY_NOTIFY.
+*/
+gt.Manager.prototype.STATIONARY_NOTIFY=15*60*1000;
+
 /** @enum {number} Mode */
 gt.Manager.prototype.Mode={
   COLD: 1,
@@ -126,7 +132,7 @@ gt.Manager.prototype.init=function() {
   // this.geoloc=(new gt.Sim).init('http://glideport.aero/igc/20130829-cai.igc');
 
   // Preallocate circular buffers
-  this.t   =new Array(this.CBSZ); // [ms]
+  this.t   =new Array(this.CBSZ); // [ms] abs
   this.lat =new Array(this.CBSZ);
   this.lon =new Array(this.CBSZ);
   this.galt=new Array(this.CBSZ);
@@ -147,12 +153,28 @@ gt.Manager.prototype.init=function() {
   this.track=null; // current track
   this.hist=[];    // recent tracks not yet sent; this.track===this.hist.last()
 
+  this.onmodewillchange=function(sender,m,t,idx) {
+    // Notify user when transitioning MOVING -> STATIONARY
+    if(this.STATIONARY_NOTIFY<0
+       || !this.isRunning()
+       || this.mode!==this.Mode.MOVING || m!==this.Mode.STATIONARY
+       || t-this.modeTime<this.STATIONARY_NOTIFY)
+      return;
+
+    gt.beep();
+    gt.App.msg("Done flying ... STOP?", {
+                 timeout: 60*1000
+               });
+  }.bind(this);
+
   return this;
 }
 
 
 gt.Manager.prototype._reset=function() {
+  this.onmodewillchange && this.onmodewillchange(this,this.Mode.COLD,0,0);
   this.mode=this.Mode.COLD;
+  this.modeTime=0;
   this.modeIdx=0;
   this.cursor=0;
   this.warmIdx=undefined;
@@ -195,22 +217,30 @@ gt.Manager.prototype.destroy=function() {
 */
 gt.Manager.prototype._onerr=function(err) {
   console.warn('GEOERR[%d]: %s',err.code,err.message);
+
+  // code: 1, message: "User denied Geolocation"
   if(err.code===1) {
     if(this._geoerr) return; // Already reported
     this._geoerr=true;
-    // code: 1, message: "User denied Geolocation"
+    this.status='nogps';
+    this.statusTime=(new Date).getTime();
     gt.App.alert("GlideTrack cannot run without GPS.  Goodbye.", function() {
       gt.App.app.exit('nogps');
     });
   }
+
   // code 2: Network location provider at 'https://www.googleapis.com/' : Returned error code 404.
 
   // code 3: Timeout expired
+  // ... ignore
   if(err.code===3) {
     this._geoerr=true;
-    gt.App.alert("Somethings is wrong, not getting GPS fixes.", function() {
-      gt.App.app.exit('nogps');
-    });
+    this.status='timeout';
+    this.statusTime=(new Date).getTime();
+
+    // gt.App.alert("Somethings is wrong, not getting GPS fixes.", function() {
+    //   gt.App.app.exit('nogps');
+    // });
   }
 }
 
@@ -316,7 +346,7 @@ gt.Manager.prototype._processFix=function(idx) {
   var ii=idx%this.CBSZ, t=this.t[ii];
 
   // 1) ----------------------------------------------------------- Update mode
-  var m0=this.mode;
+  var m0=this.mode, m;
   switch(m0) {
   case this.Mode.COLD:
     // We are COLD, but we have a good fix
@@ -340,19 +370,22 @@ gt.Manager.prototype._processFix=function(idx) {
       ags+=this.gs[i%this.CBSZ];
     ags/=idx-i;
 
-    this.mode=ags>this.MIN_MOVING_GROUNDSPEED?this.Mode.MOVING:
-                                              this.Mode.STATIONARY;
-    this.modeIdx=idx;
+    m=ags>this.MIN_MOVING_GROUNDSPEED?this.Mode.MOVING:this.Mode.STATIONARY
+    this.onmodewillchange && this.onmodewillchange(this,m,t,idx);
+    this.mode=m;
     this.modeTime=t;
+    this.modeIdx=idx;
     break;
 
   case this.Mode.STATIONARY:
   case this.Mode.MOVING:
     // Go into COLD if we have not seen any good fixes for a while
     if(t-this.t[(idx-1)%this.CBSZ]>this.WARM_MAX_TIMEGAP) {
-      this.mode=this.Mode.COLD;
-      this.modeIdx=idx;
+      m=this.Mode.COLD;
+      this.onmodewillchange && this.onmodewillchange(this,m,t,idx);
+      this.mode=m;
       this.modeTime=t;
+      this.modeIdx=idx;
       this.warmIdx=null;
       break;
     }
@@ -364,11 +397,12 @@ gt.Manager.prototype._processFix=function(idx) {
       ags+=this.gs[i%this.CBSZ];
     ags/=idx-i;
     if(t-this.t[i%this.CBSZ]<this.dt) break;
-    var m=ags>this.MIN_MOVING_GROUNDSPEED?this.Mode.MOVING:this.Mode.STATIONARY;
+    m=ags>this.MIN_MOVING_GROUNDSPEED?this.Mode.MOVING:this.Mode.STATIONARY;
     if(m!==this.mode) {
+      this.onmodewillchange && this.onmodewillchange(this,m,t,idx);
       this.mode=m;
-      this.modeIdx=idx;
       this.modeTime=t;
+      this.modeIdx=idx;
     }
     break;
   }

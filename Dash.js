@@ -85,6 +85,9 @@ gt.Dash.prototype.pushIntoUI=function() {
   this.$id('status').textContent=m.status||'?';
   this.$id('time').textContent=m.statusTime &&
                       new Date(m.statusTime).toTimeString().substr(0,8)||'?';
+  var nominal=!m.status||m.status==='ok';
+  this.$id('status').style.color=nominal?null:'red';
+  this.$id('time'  ).style.color=nominal?null:'red';
   if(m.fix) {
     this.$id('loc').textContent=m.fix.lat.toPrecision(7)+','+
                                 m.fix.lon.toPrecision(8);
@@ -382,6 +385,7 @@ gt.Dash.prototype.doSettingsUpdate=function(event) {
 gt.Dash.prototype.doRunStop=function(event) {
   event.stopPropagation();event.preventDefault();
   gt.beep();
+  gt.App.msg(null);
   if(this.manager.isRunning()) {
     this.manager.stop();
     this.$id('run').textContent='START';

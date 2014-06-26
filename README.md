@@ -7,8 +7,8 @@ GlidePort.aero so that spectators can view your flights in real-time (or later).
 GlideTrack also allows you to send text messages that can be seen in
 GlidePort.aero.
 
-This is a reference implementation, it illustrates how to use the GlidePort.aero
-API.  GlideTrack source code is available at
+This is a *minimal* functionality reference implementation, it illustrates how
+to use the GlidePort.aero API.  GlideTrack source code is available at
 [github.com/glideport/GlideTrack](https://github.com/glideport/GlideTrack).
 However, GlideTrack is fully functional, you can use it to track your flights in
 real-time!

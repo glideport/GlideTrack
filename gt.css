@@ -73,6 +73,8 @@ INPUT {
   margin-top:30px;
   position: absolute;
   bottom: 0;
+  width:100%;
+  text-align:center;
 
   -webkit-user-select: none;
   user-select: none;
@@ -175,7 +177,7 @@ INPUT {
 
 #Dash_quickmsg {
   margin-top: 5px;
-  border-top: 1px solid lightgray;
+  /*border-top: 1px solid lightgray;*/
 }
 
 #Dash_quickmsg DIV {
@@ -290,5 +292,41 @@ INPUT {
 }
 
 /*---------------------------------------------------------------------------*/
+#msgbox {
+  position: absolute;
+  top: 102px;
+  /*width:100%;*/
+  z-index:1000000;
+
+  left:0; right:0;
+  width: 90%;
+  margin: 0 auto;
+  /*max-width:90%;*/
+
+  border: solid 1px lightgray;
+  padding: 6px;
+  background: yellow;
+  color: black;
+  font-size: 20px;
+
+  -webkit-transition-property: opacity;
+  -webkit-transition-duration: .5s;
+  -moz-transition-property: opacity;
+  -moz-transition-duration: .5s;
+}
+
+.blink {
+  -webkit-animation-name: blink;
+  -webkit-animation-iteration-count: infinite;
+  -webkit-animation-timing-function: cubic-bezier(1.0,0,0,1.0);
+  -webkit-animation-duration: 1s;
+}
+
+@-webkit-keyframes blink {
+  /*from { opacity: 1; }*/
+  /*to { opacity: .5; }*/
+  from { color: black; }
+  to { color: #aaa; }
+}
 
 /*EOF*/

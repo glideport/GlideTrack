@@ -244,4 +244,38 @@ gt.App.alert=function(msg,next) {
 }
 
 
+/**
+  @param {string} msg
+  @param {Object=} opt
+*/
+gt.App.msg=function(msg,opt) {
+  var timeout=opt&&opt['timeout'] || 3300,
+      css=opt&&opt['css']||'blink';
+  var div=$id('msgbox');
+  if(!div) {
+    var div=document.createElement('center');
+    div.id='msgbox';
+    document.body.appendChild(div);
+  }
+
+  if(div.__timer) clearTimeout(div.__timer);
+  if(!msg) {
+    div.style.opacity=0;
+    div.style.display='none';
+    return;
+  }
+
+  div.innerHTML=msg;
+  div.className=css;
+  div.style.opacity=1;
+  div.style.display=null;
+
+  div.__timer=setTimeout(function() {
+    var div=$id('msgbox');
+    if(!div) return;
+    div.style.opacity=0;
+    div.style.display='none';
+  },timeout);
+}
+
 // EOF
