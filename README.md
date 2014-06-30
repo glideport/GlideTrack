@@ -87,6 +87,29 @@ GlideTrack was able to successfully send tracking data.
 ![](img/coverage-20140504.jpg) | ![](img/coverage-20140527.jpg)
 
 
+### GPS Quality
+
+The quality of current phone GPSes for flying applications is not as good as
+flight recorder.  For example, it is not uncommon see erratic GPS altitudes and
+GPS "teleporting".  One thing thing that makes phone GPS perform poorly is the
+internal phone GPS filter which is designed and tuned for walking and driving;
+e.g., you don’t see erratic altitude when you drive around.   Note that it does
+get better as you run your phone for a while, provided the phone has a good view
+of the sky.
+
+The location of the phone is very important --- it must have good and
+*consistent* view of the sky in order to produce good quality fixes.  The GPS
+quality degrades if it has to switch lock to a different set of satellites,
+e.g., you get one view of the sky when you are straight and level, and a
+different view of the sky if you are banked.
+
+Note that GlideTrack has no GPS filtering whatsoever since its primary intent is
+to be an example app how to use the GlidePort API, and thus simple.  Third-party
+flying/tracking apps using GlidePort API should have filtering to improve track
+quality.  In any case, iPhone 6 will reportedly have a pressure sensor, so at
+least that will fix the erratic altitude problem completely.
+
+
 ### Diagnostic Mode
 
 The diagnostic mode can be turned on in the Settings screen.  In the diagnostic

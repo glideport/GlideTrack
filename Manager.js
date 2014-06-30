@@ -153,8 +153,8 @@ gt.Manager.prototype.init=function() {
   this.track=null; // current track
   this.hist=[];    // recent tracks not yet sent; this.track===this.hist.last()
 
+  // Notify user when transitioned MOVING -> STATIONARY, i.e., after landing
   this.onmodewillchange=function(sender,m,t,idx) {
-    // Notify user when transitioning MOVING -> STATIONARY
     if(this.STATIONARY_NOTIFY<0
        || !this.isRunning()
        || this.mode!==this.Mode.MOVING || m!==this.Mode.STATIONARY
@@ -162,10 +162,25 @@ gt.Manager.prototype.init=function() {
       return;
 
     gt.beep();
-    gt.App.msg("Done flying ... STOP?", {
-                 timeout: 60*1000
-               });
+    gt.App.msg("Done flying ... STOP?", { timeout: 60*1000 });
   }.bind(this);
+
+  // Notify user of low/critical battery status, add track message
+  window.addEventListener('batterystatus', function(info) {
+    console.debug('baterystatus: '+info.level+', plugged: '+info.isPlugged);
+  });
+  window.addEventListener('batterylow', function(info) {
+    console.debug('batterylow: '+info.level);
+    if(!this.isRunning() || !this.track) return;
+    this.track.addMsg('Battery low: '+info.level,'DBG');
+    gt.App.msg("Battery low: "+info.level, { timeout: 30*1000 });
+  });
+  window.addEventListener('batterycritical', function(info) {
+    console.debug('batterycritical: '+info.level);
+    if(!this.isRunning() || !this.track) return;
+    this.track.addMsg('Battery very low!','WRN');
+    gt.App.msg("Battery critical: "+info.level, { timeout: 30*1000 });
+  });
 
   return this;
 }

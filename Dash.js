@@ -294,12 +294,12 @@ gt.Dash.prototype.layout=function(parent) {
   y[onaction]=this.doEmailIgc.bind(this);
   div.appendChild(y);
 
+  this.pushIntoUI();
+
   window.plugin && window.plugin.email &&
     window.plugin.email.isServiceAvailable(function(gotmail) {
-      this.$id('email').style.display=null;
+      if(this.$id('email')) this.$id('email').style.display=null;
     });
-
-  this.pushIntoUI();
   return this;
 }
 

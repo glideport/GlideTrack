@@ -187,21 +187,12 @@ gt.App.RUN=function() {
     console.debug('Resumed!');
   });
 
-  window.addEventListener('batterystatus', function(info) {
-    console.debug('baterystatus: '+info.level+', plugged: '+info.isPlugged);
-  });
-  window.addEventListener('batterylow', function(info) {
-    console.debug('batterylow: '+info.level);
-  });
-  window.addEventListener('batterycritical', function(info) {
-    console.debug('batterycritical: '+info.level);
-  });
-
   document.addEventListener('offline', function() {
     console.debug('offline');
   });
   document.addEventListener('online', function() {
     console.debug('online');
+    gt.App.Netstat();
   });
 
   // console.debug('%o',device);
