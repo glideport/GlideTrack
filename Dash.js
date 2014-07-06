@@ -119,6 +119,7 @@ gt.Dash.prototype.pushIntoUI=function() {
                                            next||'-';
     var last=(now-track.xferSuccessTime)/1000;
     this.$id('last').textContent=last!=null&&!isNaN(last)?gt.fmt_dt(last):'-';
+    this.$id('last').style.color=(last<5*60)?null:'red';
 
     // if(gt.App.app.settings.debug) {
       this.$id('debug').textContent=(new Date).toTimeString().substr(0,8)+
