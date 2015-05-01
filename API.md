@@ -228,7 +228,7 @@ Return:
         var d2=(d/(base*base))|0, d1=((d/base)|0)-d2*base, d0=d%base;
         s+=d2+d1+d0;
       }
-      var r=base-(s%base);
+      var r=(base-(s%base))%base;
       if(r<10) return String.fromCharCode(48+r);
       if(r<36) return String.fromCharCode(65+r-10);
       if(r<62) return String.fromCharCode(97+r-36);
